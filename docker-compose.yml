@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:13
+    restart: always
+    volumes:
+      - app-db-data:/var/lib/postgresql/data/pgdata
+    environment:
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    env_file:
+      - blog.env
+    networks:
+      - app-network
+
+  web:
+    build: .
+    command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db          # Waits for `db` to start
+    links:
+      - db          # Explicitly links `db` service for hostname resolution
+    env_file:
+      - blog.env
+    networks:
+      - app-network
+
+volumes:
+  app-db-data:
+
+networks:
+  app-network:
