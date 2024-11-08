@@ -17,7 +17,7 @@ class UserListView(ListAPIView):
     """
     queryset = User.objects.all()            # Retrieve all users
     serializer_class = UserListSerializer
-    # permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
 
 class UserDetailView(RetrieveAPIView):
     """
@@ -26,13 +26,13 @@ class UserDetailView(RetrieveAPIView):
     queryset = User.objects.all()
     serializer_class = UserDetailSerializer
     lookup_field = 'pk'
-    # permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
 
 class BlogPostViewSet(viewsets.ModelViewSet):
     queryset = BlogPost.objects.all()
     serializer_class = BlogPostSerializer
     pagination_class = BlogPostPagination
-    # permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
 
     @action(detail=True, methods=['post'])
     def like(self, request, pk=None):
@@ -61,4 +61,4 @@ class BlogCommentViewSet(viewsets.ModelViewSet):
     filterset_fields = ['post']
     ordering_fields = 'created_at'
     ordering = ['-created_at']
-    # permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
