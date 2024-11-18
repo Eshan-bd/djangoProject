@@ -144,15 +144,32 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),  # Adjust to your needs
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),  # Adjust to your needs
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
 }
 
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'My API',
-    'DESCRIPTION': 'API documentation for my Django application',
+    'TITLE': 'Blog API',
+    'DESCRIPTION': 'API documentation for Blog application',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
 }
+
+# Celery configuration using Redis as the broker
+CELERY_BROKER_URL = 'redis://localhost:6379/0'  # Redis broker URL
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'  # Store results in Redis
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Asia/Dhaka'
+
+# Email settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.mailgun.org'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'postmaster@sandbox4f07d84e925b456fbf2423c7f8ed9172.mailgun.org'
+EMAIL_HOST_PASSWORD = 'd0d443f3d5ab10e817d48f574ad99763-f6fe91d3-a9ba8c5d'
+DEFAULT_FROM_EMAIL = 'postmaster@sandbox4f07d84e925b456fbf2423c7f8ed9172.mailgun.org'
