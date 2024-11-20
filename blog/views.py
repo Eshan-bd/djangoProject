@@ -70,6 +70,10 @@ class BlogPostViewSet(viewsets.ModelViewSet):
     pagination_class = BlogPostPagination
     permission_classes = [permissions.IsAuthenticated]
 
+    def perform_create(self, serializer):
+        # Automatically set the logged-in user as the author of the blog post
+        serializer.save(author=self.request.user)
+
     @action(detail=True, methods=['post'])
     def like(self, request, pk=None):
         post = self.get_object()

@@ -5,6 +5,11 @@ from rest_framework import serializers
 from .models import BlogPost, BlogComment
 
 
+class UserSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = User
+        fields = ['url', 'username', 'email', 'groups']
+
 class UserListSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
@@ -44,10 +49,11 @@ class BlogCommentSerializer(serializers.ModelSerializer):
 class BlogPostSerializer(serializers.ModelSerializer):
     comments = BlogCommentSerializer(many=True, read_only=True)  # Nested comments for BlogPost
     like_count = serializers.SerializerMethodField()
+    author = UserSerializer(read_only=True)
 
     class Meta:
         model = BlogPost
-        fields = ['id', 'title', 'content', 'created_at', 'updated_at', 'comments', 'like_count']
+        fields = ['id', 'author', 'title', 'content', 'created_at', 'updated_at', 'comments', 'like_count']
 
     def get_like_count(self, obj):
         return obj.likes.count()
