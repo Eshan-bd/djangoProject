@@ -21,3 +21,4 @@ Thumbs.db
 
 # Ignore log files
 *.log
+/celerybeat-schedule
