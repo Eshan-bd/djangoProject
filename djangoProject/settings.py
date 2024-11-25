@@ -173,3 +173,31 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'postmaster@sandbox4f07d84e925b456fbf2423c7f8ed9172.mailgun.org'
 EMAIL_HOST_PASSWORD = 'd0d443f3d5ab10e817d48f574ad99763-f6fe91d3-a9ba8c5d'
 DEFAULT_FROM_EMAIL = 'postmaster@sandbox4f07d84e925b456fbf2423c7f8ed9172.mailgun.org'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+        },
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'django.log',  # Update this path as needed
+            'formatter': 'verbose',
+        },
+    },
+}

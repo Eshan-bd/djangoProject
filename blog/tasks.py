@@ -1,3 +1,5 @@
+import logging
+
 from celery import shared_task
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
@@ -8,7 +10,9 @@ from django.utils.http import urlsafe_base64_encode
 
 from blog.constants import NO_REPLY_EMAIL_ADDRESS
 from blog.models import BlogPost
+from djangoProject.celery import app
 
+logger = logging.getLogger(__name__)
 
 @shared_task
 def send_confirmation_email(user_id, user_email):
@@ -27,13 +31,15 @@ def send_confirmation_email(user_id, user_email):
         subject,
         message,
         NO_REPLY_EMAIL_ADDRESS,
-        ['testmojo@yopmail.com'],
+        [user_email],
         fail_silently=False,
-        html_message=message  # Specify the HTML content here
+        html_message=message
     )
 
-@shared_task
+@app.task
 def send_weekly_email_to_users():
+    logger.info("send_weekly_email_to_users task started.")
+
     # Get the current date and the start of the current week
     today = timezone.now()
     start_of_week = today - timezone.timedelta(days=today.weekday())  # Start of this week (Monday)
@@ -52,6 +58,7 @@ def send_weekly_email_to_users():
                 'user': user,
                 'posts': posts,
             })
+            logging.info(message)
 
             # Send email
             send_mail(
